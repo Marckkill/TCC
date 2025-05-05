@@ -17325,7 +17325,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Audio:Jack_3.5mm_CUI_SJ1-3525N_Horizontal"
+		(property "Footprint" "Connector_Audio:Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal"
 			(at 149.86 68.58 0)
 			(effects
 				(font
@@ -18668,7 +18668,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Audio:Jack_3.5mm_CUI_SJ1-3525N_Horizontal"
+		(property "Footprint" "Connector_Audio:Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal"
 			(at 151.13 95.25 0)
 			(effects
 				(font
@@ -18868,7 +18868,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Audio:Jack_3.5mm_CUI_SJ1-3525N_Horizontal"
+		(property "Footprint" "Connector_Audio:Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal"
 			(at 111.76 69.85 0)
 			(effects
 				(font
@@ -19132,7 +19132,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Audio:Jack_3.5mm_CUI_SJ1-3525N_Horizontal"
+		(property "Footprint" "Connector_Audio:Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal"
 			(at 111.76 44.45 0)
 			(effects
 				(font
@@ -20011,7 +20011,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Audio:Jack_3.5mm_CUI_SJ1-3525N_Horizontal"
+		(property "Footprint" "Connector_Audio:Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal"
 			(at 149.86 44.45 0)
 			(effects
 				(font
@@ -20347,7 +20347,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_Audio:Jack_3.5mm_CUI_SJ1-3525N_Horizontal"
+		(property "Footprint" "Connector_Audio:Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal"
 			(at 111.76 95.25 0)
 			(effects
 				(font
