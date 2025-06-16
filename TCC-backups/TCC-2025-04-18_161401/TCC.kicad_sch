@@ -1,0 +1,155 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "1f0980a4-7e41-4d36-8212-88a190bf01fd")
+	(paper "A4")
+	(title_block
+		(title "Inversor de Bancada")
+		(date "2025-02-21")
+		(rev "V1")
+		(company "Autor: José Fonseca")
+		(comment 1 "UFPEL")
+	)
+	(lib_symbols)
+	(rectangle
+		(start 80.01 63.5)
+		(end 205.74 116.84)
+		(stroke
+			(width 0.5)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 7a4ce41a-a09d-4db8-b3bf-de897a9dd311)
+	)
+	(text "ESQUEMATICOS"
+		(exclude_from_sim no)
+		(at 99.568 68.072 0)
+		(effects
+			(font
+				(size 3 3)
+				(bold yes)
+				(italic yes)
+			)
+		)
+		(uuid "91daccb5-bcae-4a25-aa18-5ab00d01c2f1")
+	)
+	(sheet
+		(at 163.83 77.47)
+		(size 35.56 31.75)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "2b2c5680-1210-41f2-8f09-705312d008f2")
+		(property "Sheetname" "MCU"
+			(at 163.83 76.7584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 163.83 109.982 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TCC"
+				(path "/1f0980a4-7e41-4d36-8212-88a190bf01fd"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 124.46 77.47)
+		(size 35.56 31.75)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "e65c4b6a-1a56-4798-b2ab-66d328c4aa29")
+		(property "Sheetname" "SMP"
+			(at 124.46 76.7584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "smp.kicad_sch"
+			(at 124.46 109.728 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TCC"
+				(path "/1f0980a4-7e41-4d36-8212-88a190bf01fd"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 85.09 77.47)
+		(size 35.56 31.75)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "eb0310ca-9836-4760-9ad6-d721c386b02f")
+		(property "Sheetname" "Fonte"
+			(at 85.09 76.7584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "fonte.kicad_sch"
+			(at 85.09 109.728 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TCC"
+				(path "/1f0980a4-7e41-4d36-8212-88a190bf01fd"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)
