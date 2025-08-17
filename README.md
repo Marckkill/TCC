@@ -327,9 +327,7 @@ void loop() {
 
 **José Fonseca**
 
-- Projeto de TCC - Engenharia Elétrica
-- Especialização em Eletrônica de Potência
-- Controle de Motores AC
+- Projeto de TCC - Engenharia Eletrônica
 
 ## 📝 Licença
 
