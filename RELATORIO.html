@@ -1,0 +1,375 @@
+<title>Inversor de Bancada UFPel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:wght@600&display=swap">
+<style>
+/* Layout: relatório técnico de uma coluna, com tabelas de registro e faixas de severidade à esquerda */
+:root {
+  --bg: #f6f7f8; --papel: #ffffff; --fg: #1b2228; --fg2: #4d5862; --linha: #d9dee3;
+  --acento: #1f5f8b; --acento-fundo: #e6eff6;
+  --critico: #b3261e; --critico-fundo: #fbeceb;
+  --alto: #b5590a; --alto-fundo: #fdf1e6;
+  --medio: #8a6d00; --medio-fundo: #fbf6e1;
+  --baixo: #4d5862; --baixo-fundo: #eef1f3;
+  --ok: #2d6a3e; --ok-fundo: #e8f3eb;
+  --f-titulo: "IBM Plex Serif", Georgia, serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12171b; --papel: #1a2026; --fg: #e3e8ec; --fg2: #a4afb8; --linha: #2e3740;
+  --acento: #7ab3dc; --acento-fundo: #1c2c39;
+  --critico: #f08a83; --critico-fundo: #3a1e1c; --alto: #f2a65e; --alto-fundo: #3a2817;
+  --medio: #e0c35c; --medio-fundo: #352e14; --baixo: #a4afb8; --baixo-fundo: #232b32;
+  --ok: #7fc795; --ok-fundo: #1b3123; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12171b; --papel: #1a2026; --fg: #e3e8ec; --fg2: #a4afb8; --linha: #2e3740;
+  --acento: #7ab3dc; --acento-fundo: #1c2c39;
+  --critico: #f08a83; --critico-fundo: #3a1e1c; --alto: #f2a65e; --alto-fundo: #3a2817;
+  --medio: #e0c35c; --medio-fundo: #352e14; --baixo: #a4afb8; --baixo-fundo: #232b32;
+  --ok: #7fc795; --ok-fundo: #1b3123; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font: 15.5px/1.6 var(--f-texto);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 860px; margin: 0 auto; padding-block: 40px 80px; display: grid; gap: 44px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font: 600 2rem/1.2 var(--f-titulo); }
+h2 { font: 600 1.4rem/1.3 var(--f-titulo); padding-bottom: 8px; border-bottom: 1px solid var(--linha); }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+section { display: grid; gap: 16px; min-width: 0; }
+code, .mono { font-family: var(--f-mono); font-size: .9em; }
+code { background: var(--acento-fundo); padding: 1px 5px; border-radius: 3px; }
+a { color: var(--acento); }
+.rotulo { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--fg2); font-weight: 600; }
+
+header { display: grid; gap: 14px; }
+.ficha { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 24px;
+  border-top: 1px solid var(--linha); border-bottom: 1px solid var(--linha); padding-block: 12px; }
+.ficha div { display: grid; gap: 2px; }
+.ficha span:last-child { font-weight: 500; }
+
+.aviso { background: var(--critico-fundo); border-left: 4px solid var(--critico); padding: 14px 18px; display: grid; gap: 6px; }
+.aviso strong { color: var(--critico); }
+
+.resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.resumo div { background: var(--papel); border: 1px solid var(--linha); padding: 12px 14px; display: grid; gap: 2px; }
+.resumo b { font: 600 1.6rem/1 var(--f-mono); }
+.resumo .c b { color: var(--critico); } .resumo .a b { color: var(--alto); }
+.resumo .m b { color: var(--medio); } .resumo .bx b { color: var(--baixo); }
+@media (max-width: 560px) { .resumo { grid-template-columns: repeat(2, 1fr); } }
+
+.itens { display: grid; gap: 12px; }
+.item { background: var(--papel); border: 1px solid var(--linha); border-left-width: 4px; padding: 14px 18px; display: grid; gap: 8px; min-width: 0; }
+.item.c { border-left-color: var(--critico); } .item.a { border-left-color: var(--alto); }
+.item.m { border-left-color: var(--medio); } .item.bx { border-left-color: var(--baixo); }
+.item-topo { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; }
+.sev { font: 600 .72rem/1 var(--f-texto); letter-spacing: .06em; text-transform: uppercase; padding: 4px 7px; border-radius: 3px; }
+.c .sev { background: var(--critico-fundo); color: var(--critico); } .a .sev { background: var(--alto-fundo); color: var(--alto); }
+.m .sev { background: var(--medio-fundo); color: var(--medio); } .bx .sev { background: var(--baixo-fundo); color: var(--baixo); }
+.onde { font-family: var(--f-mono); font-size: .8rem; color: var(--fg2); }
+.item dl { margin: 0; display: grid; grid-template-columns: 110px 1fr; gap: 6px 14px; }
+.item dt { color: var(--fg2); font-size: .85rem; padding-top: 2px; }
+.item dd { margin: 0; min-width: 0; }
+@media (max-width: 560px) { .item dl { grid-template-columns: 1fr; gap: 2px; } .item dd { margin-bottom: 6px; } }
+
+.tabela { overflow-x: auto; border: 1px solid var(--linha); background: var(--papel); }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+th { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--fg2); font-weight: 600; background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.num { font-family: var(--f-mono); white-space: nowrap; }
+
+ul.lista, ol.lista { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; max-width: 72ch; }
+.ok { background: var(--ok-fundo); border-left: 4px solid var(--ok); padding: 14px 18px; display: grid; gap: 8px; }
+.ok h3 { color: var(--ok); }
+
+.fluxo { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-family: var(--f-mono); font-size: .85rem; }
+.fluxo span { border: 1px solid var(--linha); background: var(--papel); padding: 6px 10px; }
+.fluxo i { color: var(--fg2); font-style: normal; }
+
+.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; counter-reset: passo; }
+.checklist li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; counter-increment: passo; max-width: 74ch; }
+.checklist li::before { content: counter(passo); font: 600 .8rem/26px var(--f-mono); text-align: center;
+  width: 26px; height: 26px; border: 1px solid var(--acento); color: var(--acento); border-radius: 50%; }
+footer { color: var(--fg2); font-size: .85rem; border-top: 1px solid var(--linha); padding-top: 14px; }
+</style>
+
+<main>
+<header>
+  <span class="rotulo">Relatório de passagem · TCC Engenharia Eletrônica · UFPel / GSIC</span>
+  <h1>Inversor trifásico de bancada modular</h1>
+  <p>Estado do hardware e do firmware no momento da entrega da bancada, com os problemas conhecidos em ordem de gravidade e o que fazer com cada um. Escrito para quem continua o projeto.</p>
+  <div class="ficha">
+    <div><span class="rotulo">Autor original</span><span>José Fonseca</span></div>
+    <div><span class="rotulo">Data</span><span>07/11/2026</span></div>
+    <div><span class="rotulo">Repositório</span><span class="mono">github.com/Marckkill/TCC</span></div>
+    <div><span class="rotulo">Base da revisão</span><span>Esquemático V1, firmware v1, fotos da montagem</span></div>
+  </div>
+</header>
+
+<div class="aviso">
+  <strong>Antes de ligar a bancada na tomada, leia o item C1.</strong>
+  <p>O lado de controle (ESP32, conectores, cabo USB) está no potencial da rede elétrica. Ligar o USB num computador com a bancada energizada pode queimar o computador e causar choque.</p>
+</div>
+
+<section>
+  <h2>1. O que é a bancada</h2>
+  <p>Um inversor trifásico de tensão alimentado pela rede: ponte retificadora KBPC5010 e barramento CC de ~311 V (rede de 220 V), módulo de potência inteligente <b>FSBB30CH60C</b> (Motion SPM 3, 600 V / 30 A, com drivers e proteção de curto), comandado por um <b>ESP32-S3</b> com PWM senoidal de 10 kHz. Saída por um filtro LC em placa separada.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Bloco</th><th>Componentes</th><th>Folha / local</th></tr></thead>
+    <tbody>
+      <tr><td>Fonte</td><td>KBPC5010, 3 × 100 µF/500 V, HLK-10M05 (5 V), HLK-10M15 (15 V), fusível na entrada</td><td>Fonte (placa perfurada separada)</td></tr>
+      <tr><td>Potência</td><td>FSBB30CH60C, bootstrap 22 µF + 100 nF, shunt R16 11 mΩ, snubber C24 0,22 µF</td><td>SMP (placa principal)</td></tr>
+      <tr><td>Controle</td><td>ESP32-S3 DevKit (YD-ESP32-S3, duas USB-C), filtros RC 100 Ω / 1 nF nas 6 entradas</td><td>MCU (placa principal)</td></tr>
+      <tr><td>Medição</td><td>6 × SCT013-030 (30 A / 1 V) por jack P2, 3 × ZMPT101B, divisor do barramento 1,2 MΩ / 10 kΩ</td><td>MCU + módulos</td></tr>
+      <tr><td>Saída</td><td>3 indutores toroidais + 3 capacitores de filme, saídas A, B, C, N</td><td>Placa do filtro (fora do esquemático)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>2. Problemas conhecidos, por gravidade</h2>
+  <div class="resumo">
+    <div class="c"><b>3</b><span>Crítico: risco de choque ou de incêndio</span></div>
+    <div class="a"><b>4</b><span>Alto: impede o funcionamento ou queima peça</span></div>
+    <div class="m"><b>3</b><span>Médio: limita o uso ou a medição</span></div>
+    <div class="bx"><b>4</b><span>Baixo: melhoria ou documentação</span></div>
+  </div>
+
+  <div class="itens">
+    <article class="item c">
+      <div class="item-topo"><span class="sev">Crítico</span><h3>C1. O controle não é isolado da rede</h3><span class="onde">Fonte, MCU</span></div>
+      <dl>
+        <dt>O que é</dt><dd>O GND do ESP32 é o negativo do barramento, que sai de uma ponte ligada direto na rede. As fontes HLK são isoladas, mas a saída delas é referenciada de volta a esse GND.</dd>
+        <dt>Risco</dt><dd>Com a bancada na tomada, ESP32, jacks, conectores e cabo USB ficam no potencial da rede. Um PC aterrado no USB fecha um curto pelo terra.</dd>
+        <dt>Como corrigir</dt><dd>Isolar o comando: optoacoplador rápido ou isolador digital (6N137, HCPL-0630, ISO7760) nas 6 entradas e no VFO, com o ESP32 numa fonte isolada própria. <b>Enquanto isso:</b> transformador isolador na entrada, isolador USB (ADuM3160) ou barramento por fonte CC isolada.</dd>
+      </dl>
+    </article>
+
+    <article class="item c">
+      <div class="item-topo"><span class="sev">Crítico</span><h3>C2. O barramento fica carregado por minutos</h3><span class="onde">Fonte</span></div>
+      <dl>
+        <dt>O que é</dt><dd>Não há resistor de descarga. Só o divisor de medição (1,21 MΩ) descarrega os 300 µF: τ ≈ 6 minutos.</dd>
+        <dt>Risco</dt><dd>Choque com ~300 V mexendo na placa "desligada".</dd>
+        <dt>Como corrigir</dt><dd>Resistor de descarga de 47 a 100 kΩ / 3 W no barramento (cai a menos de 50 V em ~1 min) e um LED de "barramento carregado". Medir com multímetro antes de tocar.</dd>
+      </dl>
+    </article>
+
+    <article class="item c">
+      <div class="item-topo"><span class="sev">Crítico</span><h3>C3. Sem limitação da corrente de partida</h3><span class="onde">Fonte</span></div>
+      <dl>
+        <dt>O que é</dt><dd>A ponte liga direto nos 300 µF. Há um fusível na entrada da fonte, mas ele não está no esquemático, e sozinho não limita o pico de carga dos capacitores.</dd>
+        <dt>Risco</dt><dd>O pico estressa a ponte e os capacitores, desarma o disjuntor ou queima o fusível, e obriga a usar um fusível maior que o necessário.</dd>
+        <dt>Como corrigir</dt><dd>NTC em série (ex.: 5D-15) ou resistor de pré-carga com relé. Um varistor junto ao fusível. Pôr o fusível no esquemático.</dd>
+      </dl>
+    </article>
+
+    <article class="item a">
+      <div class="item-topo"><span class="sev">Alto</span><h3>A1. GPIO35 e GPIO36 são da memória PSRAM</h3><span class="onde">MCU · PWM_UL, VFO</span></div>
+      <dl>
+        <dt>O que é</dt><dd>Nos módulos ESP32-S3 com PSRAM octal (N8R8, N16R8), os pinos 35, 36 e 37 estão ligados à PSRAM. A placa usada parece ser uma YD-ESP32-S3, que normalmente é N16R8.</dd>
+        <dt>Risco</dt><dd>A fase U baixa e o VFO não funcionam, ou o ESP32 trava ao usá-los.</dd>
+        <dt>Como corrigir</dt><dd>Conferir a gravação do módulo. Se for N8R8 ou N16R8: cortar a trilha e ligar PWM_UL e VFO a pinos livres (38, 39, 40, 41, 42 ou 47) e mudar os <code>#define PIN_UL</code> e <code>PIN_VFO</code> no firmware.</dd>
+      </dl>
+    </article>
+
+    <article class="item a">
+      <div class="item-topo"><span class="sev">Alto</span><h3>A2. O pull-up do VFO vai a 5 V</h3><span class="onde">SMP · R12 4k7</span></div>
+      <dl>
+        <dt>O que é</dt><dd>R12 puxa o VFO a +5 V, e o VFO entra direto num pino do ESP32.</dd>
+        <dt>Risco</dt><dd>O ESP32-S3 não tolera 5 V nos pinos: o pino degrada ou queima.</dd>
+        <dt>Como corrigir</dt><dd>Ligar R12 a +3,3 V (4,7 a 10 kΩ).</dd>
+      </dl>
+    </article>
+
+    <article class="item a">
+      <div class="item-topo"><span class="sev">Alto</span><h3>A3. Os sensores de tensão saem acima de 3,3 V</h3><span class="onde">MCU · J9 a J13</span></div>
+      <dl>
+        <dt>O que é</dt><dd>Os módulos ZMPT101B recebem +5 V. A saída deles fica centrada em ~2,5 V e vai até ~5 V.</dd>
+        <dt>Risco</dt><dd>Passa do limite do ADC (e do pino) do ESP32, e a leitura satura.</dd>
+        <dt>Como corrigir</dt><dd>Alimentar os módulos com 3,3 V (funcionam assim) ou pôr um divisor na saída.</dd>
+      </dl>
+    </article>
+
+    <article class="item a">
+      <div class="item-topo"><span class="sev">Alto</span><h3>A4. A proteção de curto dispara em ~45 A</h3><span class="onde">SMP · R16 11 mΩ, CSC</span></div>
+      <dl>
+        <dt>O que é</dt><dd>O CSC do módulo dispara com ~0,5 V no shunt. Com 11 mΩ isso é ~45 A, longe dos 5 A da bancada.</dd>
+        <dt>Risco</dt><dd>A proteção rápida protege o módulo, mas não a carga, os toroides nem a fiação de bancada.</dd>
+        <dt>Como corrigir</dt><dd>Shunt de 50 a 100 mΩ (dispara em 5 a 10 A), com a potência dimensionada, e ligação Kelvin do CSC. O firmware v2 tem proteção por software, mas ela é mais lenta (~0,5 ms).</dd>
+      </dl>
+    </article>
+
+    <article class="item m">
+      <div class="item-topo"><span class="sev">Médio</span><h3>M1. Sem frenagem</h3><span class="onde">Fonte / SMP</span></div>
+      <dl>
+        <dt>O que é</dt><dd>Não há resistor de frenagem. Ao desacelerar um motor, a energia volta ao barramento.</dd>
+        <dt>Como corrigir</dt><dd>Para a bancada, basta rampa lenta: o firmware v2 já para de desacelerar quando o barramento passa de 340 V. Para parar rápido, chopper com resistor.</dd>
+      </dl>
+    </article>
+
+    <article class="item m">
+      <div class="item-topo"><span class="sev">Médio</span><h3>M2. A medição do barramento perde precisão no topo</h3><span class="onde">MCU · R28, R29, DZ1</span></div>
+      <dl>
+        <dt>O que é</dt><dd>O zener de 3,3 V já conduz a partir de ~2 V, e o ADC satura em ~3,1 V (≈ 375 V no barramento). Um único resistor de 1,2 MΩ a 311 V passa da tensão nominal de um resistor 0411 comum.</dd>
+        <dt>Como corrigir</dt><dd>3 resistores de 390 kΩ em série; trocar o zener por um diodo duplo BAT54S para o 3,3 V; escala de ~2,5 V no máximo do barramento (e ajustar <code>GANHO[9]</code>).</dd>
+      </dl>
+    </article>
+
+    <article class="item m">
+      <div class="item-topo"><span class="sev">Médio</span><h3>M3. Montagem: fios soltos e dissipador</h3><span class="onde">Fotos</span></div>
+      <dl>
+        <dt>O que é</dt><dd>O par de rede (cinza/azul) e os fios dos ZMPT estão soltos dentro da caixa; o terra (verde-amarelo) está preso a um parafuso com a ponta solta. O módulo de potência não aparece com dissipador.</dd>
+        <dt>Como corrigir</dt><dd>Bornes, abraçadeiras e fiação de rede longe do lado de 3,3 V. Terra ligado à caixa e à entrada. Dissipador com pasta no FSBB30CH60C, mesmo a 5 A.</dd>
+      </dl>
+    </article>
+
+    <article class="item bx">
+      <div class="item-topo"><span class="sev">Baixo</span><h3>B1. Resolução dos sensores de corrente</h3><span class="onde">SCT013-030</span></div>
+      <dl>
+        <dt>O que é</dt><dd>A 5 A o sensor de 30 A entrega 0,17 V; o ruído do ADC equivale a ~0,3 A. Abaixo de ~1 A a leitura é quase só ruído. O circuito está certo (a carga é interna).</dd>
+        <dt>Como corrigir</dt><dd>Passar o fio 3 vezes pelo núcleo e pôr <code>GANHO</code> = 10 nos canais 0 a 5, ou trocar por SCT013-005.</dd>
+      </dl>
+    </article>
+
+    <article class="item bx">
+      <div class="item-topo"><span class="sev">Baixo</span><h3>B2. Tensões de linha no ADC2</h3><span class="onde">MCU · GPIO11, GPIO12</span></div>
+      <dl>
+        <dt>O que é</dt><dd>VoltSens_L12 e L23 estão no ADC2, que não entra na leitura contínua junto com o ADC1. Também são redundantes (V12 = V1 − V2). O firmware v2 não os lê.</dd>
+        <dt>Como corrigir</dt><dd>Retirar ou mover para o ADC1.</dd>
+      </dl>
+    </article>
+
+    <article class="item bx">
+      <div class="item-topo"><span class="sev">Baixo</span><h3>B3. Desacoplamento das fontes</h3><span class="onde">Fonte, SMP, MCU</span></div>
+      <dl>
+        <dt>O que é</dt><dd>As HLK não têm capacitor de saída junto ao módulo; o VCC de 15 V do SPM não tem TVS; o 5 V da HLK e o do USB se encontram no pino 5V do DevKit.</dd>
+        <dt>Como corrigir</dt><dd>10 a 22 µF + 100 nF na saída de cada HLK; TVS de 18 a 20 V no VCC; diodo Schottky no 5 V externo.</dd>
+      </dl>
+    </article>
+
+    <article class="item bx">
+      <div class="item-topo"><span class="sev">Baixo</span><h3>B4. O esquemático não bate com a montagem</h3><span class="onde">KiCad</span></div>
+      <dl>
+        <dt>O que é</dt><dd>A fonte foi montada em placa separada com um capacitor de barramento; o filtro de saída montado usa capacitores de filme e tem neutro (o esquemático mostra 100 µF/500 V eletrolíticos); o fusível não aparece. <code>filtro.kicad_sch</code> e <code>sdf.kicad_sch</code> existem, mas nenhuma folha os chama.</dd>
+        <dt>Como corrigir</dt><dd>Atualizar o esquemático para o que foi montado e ligar ou apagar as folhas soltas.</dd>
+      </dl>
+    </article>
+  </div>
+
+  <div class="ok">
+    <h3>O que está certo e pode ser mantido</h3>
+    <ul class="lista">
+      <li>Filtro RC de 100 Ω / 1 nF nas seis entradas do módulo.</li>
+      <li>Bootstrap de 22 µF + 100 nF por fase, e filtro do CSC de 100 Ω / 10 nF (~1 µs).</li>
+      <li>C_FOD de 33 nF (pulso de falha de ~1,4 ms) e snubber de 0,22 µF no barramento, que deve ficar colado nos pinos P e N.</li>
+      <li>Polarização de 1,65 V dos SCT013 por divisor próprio em cada canal.</li>
+      <li>Filtro de saída com capacitores de filme (como montado).</li>
+      <li>ERC do KiCad sem erro elétrico (os avisos são de biblioteca ausente e pino fora da grade).</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>3. Por que o firmware v1 não funcionava</h2>
+  <div class="tabela"><table>
+    <thead><tr><th>Defeito</th><th>Efeito</th></tr></thead>
+    <tbody>
+      <tr><td>Incluía o driver antigo do ADC (<code>driver/adc.h</code>) junto com o novo, e usava o formato de dados TYPE1, que o ESP32-S3 não tem</td><td>Travava no boot com o core ESP32 3.x</td></tr>
+      <tr><td>O RMS incluía o nível de 1,65 V dos sensores, e a sensibilidade era a do ACS712 (0,066 V/A), não a do SCT013</td><td>Lia ~25 A com o motor parado e disparava "sobrecorrente" assim que o buffer enchia</td></tr>
+      <tr><td>Senoide atualizada a 1 kHz pelo <code>loop()</code> com <code>delay(1)</code></td><td>20 degraus por ciclo, com tremor</td></tr>
+      <tr><td><code>Serial.readString()</code> espera 1 s por comando</td><td>A cada comando, 1 s de tensão parada (CC) no motor</td></tr>
+      <tr><td>"Parar" punha as três fases em 50 %</td><td>A ponte continuava chaveando depois do stop e da falha, e chaveava desde o boot</td></tr>
+      <tr><td>VFO lido por software a cada 10 ms; sem pré-carga do bootstrap; PWM com só 100 níveis</td><td>Proteção lenta, partida instável e senoide grosseira</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>4. O firmware v2</h2>
+  <p>Arquivo <code>Firmware/Firmware.ino</code>. Feito para o <b>core ESP32 3.x do Arduino</b> (ESP-IDF 5.1 ou mais novo); não compila no core 2.x. Compilado sem avisos no core 3.3.12, placa "ESP32S3 Dev Module": 329 kB de programa, 25 kB de RAM. <b>Ainda não rodou na placa.</b></p>
+
+  <h3>Como ele funciona</h3>
+  <ul class="lista">
+    <li><b>PWM</b>: MCPWM centralizado (contagem sobe e desce) de 10 kHz, com resolução de 0,1 µs, tempo morto de 2 µs e pulso mínimo de ~1 µs garantido.</li>
+    <li><b>Senoide</b>: calculada na interrupção do próprio PWM, um ponto por período (200 pontos por ciclo a 50 Hz), com acumulador de fase de 32 bits e tabela de 1024 pontos em inteiros.</li>
+    <li><b>Desligar</b>: o "brake" do MCPWM leva as seis saídas a nível baixo depois do tempo morto. O VFO do módulo está ligado a esse brake por hardware, então um curto detectado pelo módulo corta o PWM em nanossegundos, sem depender do software.</li>
+    <li><b>Partida</b>: liga as três chaves de baixo por 20 ms para carregar os bootstraps, depois sobe a frequência em rampa. Controle V/f com boost em baixa frequência, ou índice de modulação fixo. Frequência negativa inverte o sentido.</li>
+    <li><b>Medição</b>: ADC contínuo com DMA, 10 canais do ADC1 a 2 kHz cada. RMS sem o nível CC, em janela de 200 ms (10 ciclos de 50 Hz). Barramento pela média.</li>
+    <li><b>Serial</b>: sem bloqueio. O comando <code>mon</code> imprime medidas em CSV para os gráficos.</li>
+  </ul>
+
+  <h3>Estados</h3>
+  <div class="fluxo">
+    <span>boot: PARADO, saídas desligadas</span><i>→ start →</i><span>pré-carga 20 ms</span><i>→</i><span>RODANDO, rampa até o alvo</span><i>→ stop →</i><span>PARANDO, rampa até 0</span><i>→</i><span>PARADO</span>
+  </div>
+  <p>Qualquer falha leva a FALHA com as saídas desligadas, de qualquer estado. Só sai com <code>reset</code>, e só se o VFO já tiver voltado.</p>
+
+  <h3>Camadas de proteção</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Camada</th><th>Detecta</th><th>Tempo</th><th>Onde</th></tr></thead>
+    <tbody>
+      <tr><td>CSC do módulo</td><td>Curto (hoje ~45 A, ver A4)</td><td class="num">~2 µs</td><td>Hardware, dentro do FSBB</td></tr>
+      <tr><td>VFO → brake</td><td>Curto ou subtensão do 15 V informados pelo módulo</td><td class="num">&lt; 1 µs</td><td>Hardware do MCPWM</td></tr>
+      <tr><td>Pico de corrente</td><td>Qualquer sensor &gt; <code>I_PICO_MAX</code> (12 A)</td><td class="num">~0,5 ms</td><td>Software, a cada amostra</td></tr>
+      <tr><td>Corrente RMS</td><td>Qualquer sensor &gt; <code>I_RMS_MAX</code> (5 A)</td><td class="num">200 ms</td><td>Software, por janela</td></tr>
+      <tr><td>Sobretensão</td><td>Barramento &gt; <code>VBUS_MAX</code> (360 V)</td><td class="num">200 ms</td><td>Software</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Comandos (115200 baud, Enter no fim)</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Comando</th><th>O que faz</th></tr></thead>
+    <tbody>
+      <tr><td class="num">start</td><td>Pré-carga e rampa até a frequência alvo. Recusa com o barramento abaixo de 20 V ou com o VFO em falha.</td></tr>
+      <tr><td class="num">stop</td><td>Rampa até 0 Hz e desliga.</td></tr>
+      <tr><td class="num">off</td><td>Desliga na hora.</td></tr>
+      <tr><td class="num">f &lt;Hz&gt;</td><td>Frequência alvo, de −100 a 100 Hz (negativa inverte o sentido). Vale antes e durante o funcionamento.</td></tr>
+      <tr><td class="num">rampa &lt;Hz/s&gt;</td><td>Aceleração e desaceleração (padrão 10 Hz/s).</td></tr>
+      <tr><td class="num">m &lt;0–1&gt;</td><td>Índice de modulação fixo (desliga o V/f).</td></tr>
+      <tr><td class="num">vf</td><td>Volta ao V/f.</td></tr>
+      <tr><td class="num">status</td><td>Estado, frequência, índice, VFO e todas as medidas.</td></tr>
+      <tr><td class="num">mon &lt;ms&gt;</td><td>Uma linha CSV a cada &lt;ms&gt;: tempo; f; m; 6 correntes; 3 tensões; barramento. <code>mon 0</code> desliga.</td></tr>
+      <tr><td class="num">reset</td><td>Limpa a falha, se o VFO já voltou.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>O que ajustar no topo do arquivo</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Constante</th><th>Padrão</th><th>Quando mexer</th></tr></thead>
+    <tbody>
+      <tr><td class="num">PIN_UL, PIN_VFO</td><td class="num">35, 36</td><td>Se o módulo tiver PSRAM octal (A1)</td></tr>
+      <tr><td class="num">GANHO[0..5]</td><td class="num">30</td><td>A por V do SCT013-030. Com 3 voltas no núcleo: 10</td></tr>
+      <tr><td class="num">GANHO[6..8]</td><td class="num">250</td><td>Ponto de partida: calibrar cada ZMPT com multímetro</td></tr>
+      <tr><td class="num">GANHO[9]</td><td class="num">121</td><td>Divisor do barramento (1,21 MΩ / 10 kΩ); mudar se o divisor mudar</td></tr>
+      <tr><td class="num">TEMPO_MORTO_TICKS</td><td class="num">20 (2 µs)</td><td>Conferir com o datasheet do FSBB30CH60C</td></tr>
+      <tr><td class="num">F_NOMINAL, BOOST</td><td class="num">50 Hz, 0,05</td><td>Pela placa do motor; aumentar o boost se ele não partir</td></tr>
+      <tr><td class="num">I_RMS_MAX, I_PICO_MAX</td><td class="num">5 A, 12 A</td><td>Pela carga usada</td></tr>
+      <tr><td class="num">VBUS_MAX, VBUS_FREIO, VBUS_MIN</td><td class="num">360, 340, 20 V</td><td>Pela rede e pela fonte usada no teste</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Limites conhecidos</h3>
+  <ul class="lista">
+    <li>Nunca rodou no hardware. A ordem "força nos geradores antes do tempo morto, brake depois" segue a documentação do ESP-IDF e precisa ser conferida no osciloscópio (passo 4 abaixo).</li>
+    <li>Abaixo de ~5 Hz a janela de 200 ms tem menos de um ciclo, e o RMS oscila. O SCT013 também mede mal em frequência muito baixa.</li>
+    <li>Sem malha fechada: é V/f em malha aberta. Controle vetorial e realimentação de velocidade ficam para depois.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>5. Primeiro teste com o firmware v2</h2>
+  <ol class="checklist">
+    <li><span>Conferir a gravação do módulo ESP32 e, se preciso, mover PWM_UL e VFO (A1). Corrigir o pull-up do VFO (A2) e a alimentação dos ZMPT (A3).</span></li>
+    <li><span>Instalar o core ESP32 3.x no Arduino IDE, placa "ESP32S3 Dev Module", e gravar com a placa de potência <b>desligada</b>.</span></li>
+    <li><span>Abrir o monitor serial a 115200 e conferir a mensagem "Inversor v2 pronto" e o <code>status</code>: VFO ok, correntes perto de zero.</span></li>
+    <li><span>Com o osciloscópio nas seis entradas do módulo (sem barramento): depois do boot, todas em nível baixo. Com <code>f 5</code> e <code>start</code>: pares complementares com 2 µs de tempo morto, nunca os dois do mesmo braço em alto. Com <code>off</code>: as seis em nível baixo.</span></li>
+    <li><span>Barramento por fonte CC de 24 a 48 V com limite de corrente, carga resistiva em estrela. <code>start</code>, subir até 50 Hz e conferir a senoide filtrada e as medidas.</span></li>
+    <li><span>Calibrar os ganhos de tensão e corrente com multímetro, comparando com <code>status</code>.</span></li>
+    <li><span>Só então a rede, com transformador isolador e o USB isolado ou desligado (C1).</span></li>
+  </ol>
+</section>
+
+<footer>Revisão feita sobre o repositório <span class="mono">Marckkill/TCC</span>, o netlist exportado do KiCad 9 e as fotos da montagem. Os arquivos estão na raiz do repositório: <span class="mono">RELATORIO.html</span> e <span class="mono">Firmware/Firmware.ino</span>.</footer>
+</main>
